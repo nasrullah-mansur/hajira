@@ -1,4 +1,4 @@
-@extends('back.layout.layout', [$title = 'All courses', $add_btn = 'Add new course', $add_btn_link = route('course.create')])
+@extends('back.layout.layout', [$title = 'All Students', $add_btn = 'Add new student', $add_btn_link = route('student.create')])
 
 @section('content')
 <section id="html5">
@@ -6,7 +6,7 @@
       <div class="col-12">
         <div class="card">
           <div class="card-header">
-            <h4 class="card-title">All Courses</h4>
+            <h4 class="card-title">All Students</h4>
             <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
             <div class="heading-elements">
               <ul class="list-inline mb-0">
@@ -36,7 +36,7 @@
          // Delete Data;
          $('.dataTable').on('click', '.delete-data', function(e) {
              e.preventDefault();
-             let deleteRoute = "{{ route('course.delete') }}";
+             let deleteRoute = "{{ route('student.delete') }}";
                  let delteteDataId = $(this).attr("data-id");
                  swal({
                      title: "Are you sure?",

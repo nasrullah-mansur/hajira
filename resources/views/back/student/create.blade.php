@@ -1,11 +1,11 @@
-@extends('back.layout.layout', [$title = 'Create a new course'])
+@extends('back.layout.layout', [$title = 'Create a new student'])
 
 
 @section('content')
 <div class="col-12">
     <div class="card">
       <div class="card-header">
-        <h4 class="card-title" id="basic-layout-square-controls">Create a new course</h4>
+        <h4 class="card-title" id="basic-layout-square-controls">Create a new student</h4>
         <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
         <div class="heading-elements">
           <ul class="list-inline mb-0">
@@ -18,10 +18,10 @@
       </div>
       <div class="card-content collapse show">
         <div class="card-body">
-          <form class="form" action="{{ route('course.store') }}" method="POST">
+          <form class="form" action="{{ route('student.store') }}" method="POST">
             @csrf
             <div class="form-body">
-             
+            
               <div class="form-group">
                 <label for="name">Name</label>
                 <input type="text" id="name" class="form-control square {{ $errors->has('name') ? 'is-invalid' : ''}} " placeholder="Name" name="name">
@@ -31,26 +31,30 @@
               </div>
 
               <div class="form-group">
-                <label for="total_class">Total Class</label>
-                <input type="number" id="total_class" class="form-control square {{ $errors->has('total_class') ? 'is-invalid' : ''}} " placeholder="Total Class" name="total_class">
-                @if ($errors->has('total_class'))
-                    <small class="text-danger">{{ $errors->first('total_class') }}</small>
+                <label for="email">Email</label>
+                <input type="text" id="email" class="form-control square {{ $errors->has('email') ? 'is-invalid' : ''}} " placeholder="Email" name="email">
+                @if ($errors->has('email'))
+                    <small class="text-danger">{{ $errors->first('email') }}</small>
                 @endif
               </div>
 
               <div class="form-group">
-                <label for="total_module">Total Module</label>
-                <input type="number" id="total_module" class="form-control square {{ $errors->has('total_module') ? 'is-invalid' : ''}} " placeholder="Total Module" name="total_module">
-                @if ($errors->has('total_module'))
-                    <small class="text-danger">{{ $errors->first('total_module') }}</small>
+                <label for="phone">Phone</label>
+                <input type="text" id="phone" class="form-control square {{ $errors->has('phone') ? 'is-invalid' : ''}} " placeholder="Phone" name="phone">
+                @if ($errors->has('phone'))
+                    <small class="text-danger">{{ $errors->first('phone') }}</small>
                 @endif
               </div>
 
               <div class="form-group">
-                <label for="total_exam">Total Exam</label>
-                <input type="number" id="total_exam" class="form-control square {{ $errors->has('total_exam') ? 'is-invalid' : ''}} " placeholder="Total Exam" name="total_exam">
-                @if ($errors->has('total_exam'))
-                    <small class="text-danger">{{ $errors->first('total_exam') }}</small>
+                <label for="course_id">Course ID</label>
+                <select class="select2 form-control" name="course_id">
+                  @foreach ($courses as $course)
+                  <option value="{{ $course->id }}">{{ $course->name }}</option>
+                  @endforeach
+                </select>
+                @if ($errors->has('course_id'))
+                    <small class="text-danger">{{ $errors->first('course_id') }}</small>
                 @endif
               </div>
 
@@ -59,8 +63,7 @@
               <div class="form-group">
                 <label>Status</label>
                 <select class="form-control" name="status">
-                    <option value="{{ STATUS_UPCOMING }}">Upcoming</option>
-                    <option value="{{ STATUS_ACTIVE }}">Publised</option>
+                    <option value="{{ STATUS_ACTIVE }}">Public</option>
                     <option value="{{ STATUS_INACTIVE }}">Save Draft</option>
                 </select>
               </div>
