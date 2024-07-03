@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StudentController;
@@ -40,4 +41,14 @@ Route::middleware('auth')->group(function() {
     Route::get('student/edit/{id}', [StudentController::class, 'edit'])->name('student.edit');
     Route::post('student/update/{id}', [StudentController::class, 'update'])->name('student.update');
     Route::post('student/delete', [StudentController::class, 'delete'])->name('student.delete');
+
+
+    // Attendance;
+    Route::get('attendances', [AttendanceController::class, 'index'])->name('attendance.index');
+    Route::post('attendance/create', [AttendanceController::class, 'create'])->name('attendance.create');
+    Route::post('attendance/store', [AttendanceController::class, 'store'])->name('attendance.store');
+    Route::post('attendance/view', [AttendanceController::class, 'show'])->name('attendance.view');
+    Route::get('attendance/edit/{id}', [AttendanceController::class, 'edit'])->name('attendance.edit');
+    Route::post('attendances/update/{id}', [AttendanceController::class, 'update'])->name('attendance.update');
+    Route::post('attendances/delete', [AttendanceController::class, 'delete'])->name('attendance.delete');
 });

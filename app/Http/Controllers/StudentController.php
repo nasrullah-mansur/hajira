@@ -22,7 +22,7 @@ class StudentController extends Controller
      */
     public function create()
     {
-        $courses = Course::get(['id', 'name']);
+        $courses = Course::orderBy('created_at', 'DESC')->get(['id', 'name']);
         return view('back.student.create', compact('courses'));
     }
 
@@ -63,7 +63,7 @@ class StudentController extends Controller
     public function edit(string $id)
     {
         $student = Student::where('id', $id)->firstOrFail();
-        $courses = Course::get(['id', 'name']);
+        $courses = Course::orderBy('created_at', 'DESC')->get(['id', 'name']);
 
         return view('back.student.edit', compact('student', 'courses'));
     }

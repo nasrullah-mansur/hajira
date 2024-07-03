@@ -33,8 +33,7 @@ class StudentDataTable extends DataTable
             ->editColumn('action', function ($data) {
                 return
                     '<div class="d-flex action-btn">
-                        <a class="btn btn-icon btn-success" style="margin-right: 5px;" href="' . route('student.edit', $data->id) . '"><i class="ft-edit"></i></a>
-                        <a data-id="' . $data->id . '" class="btn btn-icon btn-danger delete-data" style="margin-right: 5px;" href="#"><i class="ft-trash-2"></i></a> 
+                        <a class="btn btn-icon btn-success" style="margin-right: 5px;" href="' . route('student.edit', $data->id) . '"><i class="ft-edit"></i></a> 
                     </div>';
             })
             ->rawColumns(['action', 'status', 'image'])

@@ -5,8 +5,16 @@
         
 
 
-        <li class=" nav-item {{ Route::is('custom.page.*') ? 'active' : ''}}">
-            <a href="#"><i class="ft-clipboard"></i><span class="menu-title">Custom Page</span></a>
+        <li class=" nav-item {{ Route::is('course.*') ? 'active' : ''}}">
+            <a href="{{ route('course.index') }}"><i class="ft-clipboard"></i><span class="menu-title">Courses</span></a>
+        </li>
+
+        <li class=" nav-item {{ Route::is('student.*') ? 'active' : ''}}">
+            <a href="{{ route('student.index') }}"><i class="ft-clipboard"></i><span class="menu-title">Students</span></a>
+        </li>
+
+        <li class=" nav-item {{ Route::is('attendance.*') ? 'active' : ''}}">
+            <a href="{{ route('attendance.index') }}"><i class="ft-clipboard"></i><span class="menu-title">Attendance</span></a>
         </li>
         
       </ul>
