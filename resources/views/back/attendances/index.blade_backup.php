@@ -141,7 +141,6 @@
     let attendance_type = 'new';
     let completed_class = null;
     let total_class_of_course = 0;
-    let edit_students = null;
 
     let class_no_option = function(total) {
         let options = ['<option selected disabled>Select One</option>'];
@@ -206,9 +205,6 @@
             url: create_url,
             data: formDataObject,
             success: function(students) {
-                console.log(students);
-
-                edit_students = students;
                 $('#student_item_area').html(studentItem(students));
 
                 $('.skin-square input').iCheck({
@@ -218,16 +214,6 @@
 
                 studentItemCheckbox();
                 $('.give-attendance-area').removeClass('d-none');
-            },
-            error: function(err) {
-                let errors = err.responseJSON.errors;
-                let errorsMsgs = Object.values(errors).reduce((acc, messages) => acc.concat(messages), []);
-                
-                let errorsMsgsElements = errorsMsgs.map((item) => {
-                    return `<span class="d-block">${item}</span>`;
-                })
-                
-                $('.error_msgs').removeClass('d-none').html(errorsMsgsElements.join(''));
             }
         })
     });
@@ -243,8 +229,6 @@
     })
 
     $('#student_attendance').on('submit', function(e) {
-        $('#student_attendance button').attr('disabled', 'disabled');
-        
         e.preventDefault();
         let course_id = $('[name="f_course_id"]').val();
         let type = $('[name="f_type"]').val();
@@ -267,48 +251,32 @@
                 student_name: item.querySelector('input[name="student_name"]').value,
                 present: item.querySelector('input[name="present"]').value,
                 homework: item.querySelector('input[name="homework"]').value,
-                total_present: type == 'new' ? totalCount(item.querySelector('input[name="total_present"]').value, item.querySelector('input[name="present"]').value) : totalCountEdit(item.querySelector('input[name="student_id"]').value, item.querySelector('input[name="present"]').value), 
-                total_homework: type == 'new' ? totalCount(item.querySelector('input[name="total_homework"]').value,item.querySelector('input[name="homework"]').value) : totalCountEdit(item.querySelector('input[name="student_id"]').value, item.querySelector('input[name="homework"]').value), 
+                total_present: totalCount(item.querySelector('input[name="total_present"]').value, item.querySelector('input[name="present"]').value) ,
+                total_homework: totalCount(item.querySelector('input[name="total_homework"]').value,item.querySelector('input[name="homework"]').value) 
             };
             students.push(student);
         });
        
 
         function totalCount(prev, status) {
-            
-            // Add;
-            if (prev == 0) {
-                if (status == 'yes') {
-                    return 1;
-                } else {
-                    return 0;
+            if (type == 'new') {
+                // Add;
+                if (prev == 'undefined') {
+                    if (status == 'yes') {
+                        return 1;
+                    } else {
+                        return 'undefined';
+                    }
                 }
-            }
 
-            // Edit;
-            else {
-                if (status == 'yes') {
-                    return Number(prev) + 1;
-                } else {
-                    return prev;
+                // Edit;
+                else {
+                    if (status == 'yes') {
+                        return Number(prev) + 1;
+                    } else {
+                        return prev;
+                    }
                 }
-            }
-
-        }
-
-        function totalCountEdit(student_id, status) {
-            let prevItem = edit_students.filter(item => {
-                return item.id == student_id;
-            })
-
-            prevItem = prevItem[0];
-
-            if ((status === "yes" && prevItem.present === "yes") || (status === "no" && prevItem.present === "no")) {
-                return Number(prevItem.total_present);
-            } else if (status === "yes" && prevItem.present === "no") {
-                return (Number(prevItem.total_present) + 1);
-            } else if (status === "no" && prevItem.present === "yes") {
-                return (Number(prevItem.total_present) - 1);
             }
         }
 
@@ -319,13 +287,20 @@
             url: create_url,
             data: { ...finalData, attendances: students },
             success: function(response) {
-                console.log(response);
+                $('.give-attendance-area').addClass('d-none');
+                $('#course-form')[0].reset();
                 completed_class = Number(completed_class) + 1;
-                window.location.replace(response);
+                $('#completed_class').text(completed_class);
             },
             error: function(err) {
-                console.log(err);
-                $('#student_attendance button').removeAttr('disabled');
+                let errors = err.responseJSON.errors;
+                let errorsMsgs = Object.values(errors).reduce((acc, messages) => acc.concat(messages), []);
+
+                let errorsMsgsElements = errorsMsgs.map((item) => {
+                    return `<span class="d-block">${item}</span>`;
+                })
+
+                $('.error_msgs').removeClass('d-none').html(errorsMsgsElements.join(''));
             }
         })
     })
@@ -336,15 +311,15 @@
                 <div class="student-item p-1 mb-1 bg-info bg-lighten-2 d-flex align-items-center">
                     <input type="hidden" value="${e.id}" name="student_id" />
                     <input type="hidden" value="${e.name}" name="student_name" />
-                    <input type="hidden" value="${e.total_present ? e.total_present : 0}" name="total_present" />
-                    <input type="hidden" value="${e.total_homework ? e.total_homework : 0}" name="total_homework" />
+                    <input type="hidden" value="${e.total_present}" name="total_present" />
+                    <input type="hidden" value="${e.total_homework}" name="total_homework" />
                     <h4 class="m-0" style="font-size: 22px;">
                         <span class="d-inline-block"><span class="d-inline-block" style="width: 30px;">${index + 1}.</span> ${e.name}</span>
                     </h4>
                     <strong class="ml-auto" style="font-size: 18px; margin-right: 20px;">
                         T.P - ${e.total_present} / T.H - ${e.total_homework}
                     </strong>
-                    <div class="align-right d-flex switch-area">
+                    <div class="align-right d-flex">
                         <div class="bg-white d-flex align-items-center" style="padding: 5px 10px; margin-right: 5px;">
                             <input type="hidden" value="${e.present ? e.present : 'no'}" name="present" />
                             <label class="custom_checkbox ${e.present == 'yes' ? 'active' : ''} m-0 cursor-pointer">Present</label>
@@ -376,10 +351,4 @@
 
 
 </script>
-
-
-@endpush
-
-@push('session_forget')
-
 @endpush

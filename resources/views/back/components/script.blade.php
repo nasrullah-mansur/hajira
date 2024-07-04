@@ -61,3 +61,7 @@
 @endif
 
 @stack('menu_js')
+
+@stack('session_forget')
+
+{{Session::forget('success')}}

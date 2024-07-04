@@ -61,6 +61,7 @@
                 <select class="form-control" name="status">
                     <option value="{{ STATUS_UPCOMING }}">Upcoming</option>
                     <option value="{{ STATUS_ACTIVE }}">Publised</option>
+                    <option value="{{ STATUS_FINISH }}">Finished</option>
                     <option value="{{ STATUS_INACTIVE }}">Save Draft</option>
                 </select>
               </div>

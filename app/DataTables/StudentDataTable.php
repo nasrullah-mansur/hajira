@@ -2,6 +2,7 @@
 
 namespace App\DataTables;
 
+use App\Models\Course;
 use App\Models\Student;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
@@ -24,6 +25,10 @@ class StudentDataTable extends DataTable
         return (new EloquentDataTable($query))
             ->addColumn('action', 'student.action')
             ->addIndexColumn()
+            ->editColumn('course_id', function ($data) {
+                $course_name = Course::where('id', $data->course_id)->first();
+                return $course_name->name;
+            })
             ->editColumn('created_at', function ($data) {
                 return $data->created_at->diffForHumans(); // human readable format
             })
@@ -82,6 +87,7 @@ class StudentDataTable extends DataTable
             Column::make('name')->searchable(false),
             Column::make('email'),
             Column::make('phone'),
+            Column::make('course_id'),
             Column::make('status')->searchable(false),
             Column::make('created_at')->searchable(false),
             Column::make('updated_at')->searchable(false),

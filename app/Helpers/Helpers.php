@@ -10,6 +10,7 @@ const PATIENT_ROLE = 'patient-role';
 
 const STATUS_ACTIVE = 'PUBLISHED';
 const STATUS_INACTIVE = 'DRAFT';
+const STATUS_FINISH = 'FINISHED';
 
 const STATUS_UPCOMING = 'UPCOMING';
 

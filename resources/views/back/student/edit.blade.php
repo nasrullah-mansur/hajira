@@ -31,14 +31,6 @@
               </div>
 
               <div class="form-group">
-                <label for="email">Email</label>
-                <input value="{{ $student->email }}" type="text" id="email" class="form-control square {{ $errors->has('email') ? 'is-invalid' : ''}} " placeholder="Email" name="email">
-                @if ($errors->has('email'))
-                    <small class="text-danger">{{ $errors->first('email') }}</small>
-                @endif
-              </div>
-
-              <div class="form-group">
                 <label for="phone">Phone</label>
                 <input value="{{ $student->phone }}" type="text" id="phone" class="form-control square {{ $errors->has('phone') ? 'is-invalid' : ''}} " placeholder="Phone" name="phone">
                 @if ($errors->has('phone'))

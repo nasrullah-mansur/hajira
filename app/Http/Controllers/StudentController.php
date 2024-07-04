@@ -75,7 +75,6 @@ class StudentController extends Controller
     {
         $request->validate([
             'name' => 'required|max:255',
-            'course_id' => 'required|numeric',
             'email' => 'required|email',
             'phone' => 'required|max_digits:11',
         ]);
@@ -84,7 +83,6 @@ class StudentController extends Controller
         $student->name = $request->name;
         $student->email = $request->email;
         $student->phone = $request->phone;
-        $student->course_id = $request->course_id;
         $student->status = $request->status;
         $student->save();
 

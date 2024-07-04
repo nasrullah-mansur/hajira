@@ -25,7 +25,21 @@ class AttendanceController extends Controller
      */
     public function create(Request $request)
     {
-        // return $request;
+        // Common validation rules
+        $rules = [
+            'course_id' => 'required',
+            'type' => 'required',
+        ];
+
+        // Add additional validation rules based on the type
+        if ($request->type == 'new') {
+            $rules['date'] = 'required';
+        } elseif ($request->type == 'old') {
+            $rules['class_no_data'] = 'required';
+        }
+
+        // Validate the request with the combined rules
+        $request->validate($rules);
 
         $course_id = json_decode($request->course_id)->id;
 
@@ -73,36 +87,39 @@ class AttendanceController extends Controller
 
             $attendance->save();
 
-           return 'Attendance added successfully';
-
+        //    return 'Attendance added successfully';
+ $request->session()->put('success', 'Attendance added successfully');
 
 
         }
 
         else {
             // Update data;
+
+            $request->attendances;
+
             $request->validate([
                 'course_id' => 'required',
                 'type' => 'required',
                 'class_no_data' => 'required',
             ]);
 
-
+            
             $total_class_count = Attendance::where('course_id', $request->course_id)->count();
 
-            return $attendance = Attendance::where('course_id', $request->course_id)
+            $attendance = Attendance::where('course_id', $request->course_id)
             ->where('class_no', $request->class_no_data)
             ->firstOrFail();
 
-            $attendance->course_id = $request->course_id;
-            $attendance->class_no = $total_class_count;
-            $attendance->date = $request->date;
             $attendance->attendance_data = json_encode($request->attendances);
 
             $attendance->save();
 
-           return 'Attendance updated successfully';
+        //    return 'Attendance updated successfully';
+            $request->session()->put('success', 'Attendance updated successfully');
         }
+
+        return route('attendance.index');
     }
 
     /**
